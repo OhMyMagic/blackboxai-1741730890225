@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Workout - FitTrack</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <i class="fas fa-dumbbell text-indigo-600 text-2xl"></i>
+                        <span class="ml-2 text-xl font-semibold text-gray-900">FitTrack</span>
+                    </a>
+                </div>
+                <div class="hidden sm:flex sm:items-center sm:space-x-8">
+                    <a href="workout-plans.html" class="text-gray-500 hover:text-indigo-600">Workout Plans</a>
+                    <a href="track-workout.html" class="text-indigo-600 font-medium">Track Workout</a>
+                    <a href="dashboard.html" class="text-gray-500 hover:text-indigo-600">Dashboard</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="flex items-center sm:hidden">
+                    <button type="button" class="text-gray-500 hover:text-indigo-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div class="hidden sm:hidden bg-white border-b border-gray-200">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="workout-plans.html" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Workout Plans</a>
+            <a href="track-workout.html" class="block px-3 py-2 text-base font-medium text-indigo-600 bg-gray-50">Track Workout</a>
+            <a href="dashboard.html" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8">Track Your Workout</h1>
+
+            <!-- Workout Timer -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="text-center">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Workout Timer</h2>
+                    <div class="text-4xl font-bold text-indigo-600 mb-6" id="timer">00:00:00</div>
+                    <div class="space-x-4">
+                        <button id="startTimer" class="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition duration-200">
+                            <i class="fas fa-play mr-2"></i>Start
+                        </button>
+                        <button id="stopTimer" class="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 transition duration-200" disabled>
+                            <i class="fas fa-stop mr-2"></i>Stop
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise Log Form -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6">Log Exercises</h2>
+                
+                <div id="exerciseList" class="space-y-6">
+                    <!-- Exercise entries will be added here -->
+                </div>
+
+                <div class="mt-6">
+                    <button id="addExercise" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                        <i class="fas fa-plus-circle mr-2"></i>Add Another Exercise
+                    </button>
+                </div>
+
+                <div class="mt-8">
+                    <button id="saveWorkout" class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+                        Save Workout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center text-sm text-gray-500">
+                <p>&copy; 2024 FitTrack. All rights reserved.</p>
+                <div class="mt-2">
+                    <a href="#" class="text-gray-400 hover:text-gray-500 mx-2">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500 mx-2">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Check login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'index.html';
+            }
+            addExerciseEntry(); // Add first exercise entry
+        });
+
+        // Toggle mobile menu
+        document.querySelector('button').addEventListener('click', function() {
+            const mobileMenu = document.querySelector('.sm\\:hidden.bg-white');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Timer functionality
+        let timerInterval;
+        let startTime;
+        let isRunning = false;
+
+        document.getElementById('startTimer').addEventListener('click', function() {
+            if (!isRunning) {
+                startTime = Date.now() - (startTime ? Date.now() - startTime : 0);
+                timerInterval = setInterval(updateTimer, 1000);
+                isRunning = true;
+                this.disabled = true;
+                document.getElementById('stopTimer').disabled = false;
+            }
+        });
+
+        document.getElementById('stopTimer').addEventListener('click', function() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                this.disabled = true;
+                document.getElementById('startTimer').disabled = false;
+            }
+        });
+
+        function updateTimer() {
+            const elapsedTime = Date.now() - startTime;
+            const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+            const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+            document.getElementById('timer').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Exercise entry functionality
+        function addExerciseEntry() {
+            const exerciseList = document.getElementById('exerciseList');
+            const entryId = Date.now(); // Unique ID for the entry
+
+            const exerciseEntry = document.createElement('div');
+            exerciseEntry.className = 'exercise-entry bg-gray-50 p-6 rounded-lg';
+            exerciseEntry.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Exercise Name</label>
+                        <input type="text" class="exercise-name w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sets</label>
+                        <input type="number" class="exercise-sets w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="1" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Reps</label>
+                        <input type="number" class="exercise-reps w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="1" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+                        <input type="number" class="exercise-weight w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="0" step="0.5">
+                    </div>
+                </div>
+                ${exerciseList.children.length > 0 ? `
+                    <button class="remove-exercise mt-4 text-red-600 hover:text-red-700">
+                        <i class="fas fa-trash mr-2"></i>Remove Exercise
+                    </button>
+                ` : ''}
+            `;
+
+            exerciseList.appendChild(exerciseEntry);
+
+            // Add remove functionality
+            const removeButton = exerciseEntry.querySelector('.remove-exercise');
+            if (removeButton) {
+                removeButton.addEventListener('click', function() {
+                    exerciseEntry.remove();
+                });
+            }
+        }
+
+        // Add exercise button
+        document.getElementById('addExercise').addEventListener('click', addExerciseEntry);
+
+        // Save workout
+        document.getElementById('saveWorkout').addEventListener('click', function() {
+            const exercises = [];
+            let isValid = true;
+
+            // Collect exercise data
+            document.querySelectorAll('.exercise-entry').forEach(entry => {
+                const name = entry.querySelector('.exercise-name').value;
+                const sets = entry.querySelector('.exercise-sets').value;
+                const reps = entry.querySelector('.exercise-reps').value;
+                const weight = entry.querySelector('.exercise-weight').value;
+
+                if (!name || !sets || !reps) {
+                    isValid = false;
+                    return;
+                }
+
+                exercises.push({
+                    name,
+                    sets: parseInt(sets),
+                    reps: parseInt(reps),
+                    weight: weight ? parseFloat(weight) : 0
+                });
+            });
+
+            if (!isValid) {
+                alert('Please fill in all required fields for each exercise.');
+                return;
+            }
+
+            if (exercises.length === 0) {
+                alert('Please add at least one exercise.');
+                return;
+            }
+
+            // Get workout duration
+            const duration = document.getElementById('timer').textContent;
+
+            // Create workout object
+            const workout = {
+                date: new Date().toISOString(),
+                duration,
+                exercises
+            };
+
+            // Save to localStorage
+            const workouts = JSON.parse(localStorage.getItem('workouts') || '[]');
+            workouts.push(workout);
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
