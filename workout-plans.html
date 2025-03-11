@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Plans - FitTrack</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <i class="fas fa-dumbbell text-indigo-600 text-2xl"></i>
+                        <span class="ml-2 text-xl font-semibold text-gray-900">FitTrack</span>
+                    </a>
+                </div>
+                <div class="hidden sm:flex sm:items-center sm:space-x-8">
+                    <a href="workout-plans.html" class="text-indigo-600 font-medium">Workout Plans</a>
+                    <a href="track-workout.html" class="text-gray-500 hover:text-indigo-600">Track Workout</a>
+                    <a href="dashboard.html" class="text-gray-500 hover:text-indigo-600">Dashboard</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="flex items-center sm:hidden">
+                    <button type="button" class="text-gray-500 hover:text-indigo-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div class="hidden sm:hidden bg-white border-b border-gray-200">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="workout-plans.html" class="block px-3 py-2 text-base font-medium text-indigo-600 bg-gray-50">Workout Plans</a>
+            <a href="track-workout.html" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Track Workout</a>
+            <a href="dashboard.html" class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-50">Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Workout Plans</h1>
+        
+        <!-- Workout Plans Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Weight Loss Plan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')"></div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Weight Loss Plan</h3>
+                    <p class="text-gray-600 mb-4">A comprehensive plan designed to help you lose weight through a combination of cardio and strength training.</p>
+                    <button onclick="showPlanDetails('weightLoss')" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+                        View Details
+                    </button>
+                </div>
+            </div>
+
+            <!-- Muscle Gain Plan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/1229356/pexels-photo-1229356.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')"></div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Muscle Gain Plan</h3>
+                    <p class="text-gray-600 mb-4">Build muscle and strength with this progressive overload-based workout program.</p>
+                    <button onclick="showPlanDetails('muscleGain')" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+                        View Details
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cardio Blast Plan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')"></div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Cardio Blast Plan</h3>
+                    <p class="text-gray-600 mb-4">Improve your cardiovascular fitness with this high-intensity interval training program.</p>
+                    <button onclick="showPlanDetails('cardioBlast')" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="planModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="modalTitle" class="text-2xl font-bold text-gray-900"></h2>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center text-sm text-gray-500">
+                <p>&copy; 2024 FitTrack. All rights reserved.</p>
+                <div class="mt-2">
+                    <a href="#" class="text-gray-400 hover:text-gray-500 mx-2">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500 mx-2">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Toggle mobile menu
+        document.querySelector('button').addEventListener('click', function() {
+            const mobileMenu = document.querySelector('.sm\\:hidden.bg-white');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Workout plan details
+        const workoutPlans = {
+            weightLoss: {
+                title: "Weight Loss Plan",
+                description: "A 12-week program designed to help you lose weight through a combination of cardio and strength training exercises.",
+                schedule: [
+                    {
+                        day: "Monday - Lower Body",
+                        exercises: [
+                            "Squats: 3 sets x 12-15 reps",
+                            "Lunges: 3 sets x 12 reps per leg",
+                            "Leg Press: 3 sets x 12-15 reps",
+                            "Calf Raises: 3 sets x 15-20 reps",
+                            "20 minutes cardio (treadmill or cycling)"
+                        ]
+                    },
+                    {
+                        day: "Wednesday - Upper Body",
+                        exercises: [
+                            "Push-ups: 3 sets x 10-12 reps",
+                            "Dumbbell Rows: 3 sets x 12 reps",
+                            "Shoulder Press: 3 sets x 12 reps",
+                            "Tricep Dips: 3 sets x 12 reps",
+                            "20 minutes cardio (rowing or elliptical)"
+                        ]
+                    },
+                    {
+                        day: "Friday - Full Body + HIIT",
+                        exercises: [
+                            "Burpees: 3 sets x 10 reps",
+                            "Mountain Climbers: 3 sets x 30 seconds",
+                            "Jumping Jacks: 3 sets x 30 seconds",
+                            "Plank: 3 sets x 30 seconds",
+                            "25 minutes HIIT cardio"
+                        ]
+                    }
+                ]
+            },
+            muscleGain: {
+                title: "Muscle Gain Plan",
+                description: "A 12-week program focused on building muscle mass through progressive overload and proper nutrition.",
+                schedule: [
+                    {
+                        day: "Monday - Chest & Triceps",
+                        exercises: [
+                            "Bench Press: 4 sets x 8-10 reps",
+                            "Incline Dumbbell Press: 3 sets x 10 reps",
+                            "Tricep Pushdowns: 3 sets x 12 reps",
+                            "Dips: 3 sets x failure",
+                            "Cable Flyes: 3 sets x 12 reps"
+                        ]
+                    },
+                    {
+                        day: "Wednesday - Back & Biceps",
+                        exercises: [
+                            "Deadlifts: 4 sets x 6-8 reps",
+                            "Pull-ups: 3 sets x failure",
+                            "Barbell Rows: 3 sets x 10 reps",
+                            "Bicep Curls: 3 sets x 12 reps",
+                            "Face Pulls: 3 sets x 15 reps"
+                        ]
+                    },
+                    {
+                        day: "Friday - Legs & Shoulders",
+                        exercises: [
+                            "Squats: 4 sets x 8-10 reps",
+                            "Romanian Deadlifts: 3 sets x 10 reps",
+                            "Military Press: 3 sets x 10 reps",
+                            "Lateral Raises: 3 sets x 12 reps",
+                            "Leg Press: 3 sets x 12 reps"
+                        ]
+                    }
+                ]
+            },
+            cardioBlast: {
+                title: "Cardio Blast Plan",
+                description: "A high-intensity cardio program designed to improve endurance and burn calories effectively.",
+                schedule: [
+                    {
+                        day: "Monday - HIIT",
+                        exercises: [
+                            "Warm-up: 5 minutes light jog",
+                            "30 seconds sprint / 30 seconds rest x 10 rounds",
+                            "Jump Rope: 3 minutes x 3 sets",
+                            "Burpees: 30 seconds work / 30 seconds rest x 5 rounds",
+                            "Cool-down: 5 minutes stretching"
+                        ]
+                    },
+                    {
+                        day: "Wednesday - Endurance",
+                        exercises: [
+                            "45 minutes steady-state cardio (running, cycling, or swimming)",
+                            "Circuit: Jump Squats, Mountain Climbers, High Knees",
+                            "3 rounds of 1 minute each exercise",
+                            "Core work: Planks and Russian Twists",
+                            "Cool-down stretching"
+                        ]
+                    },
+                    {
+                        day: "Friday - Mixed Cardio",
+                        exercises: [
+                            "10 minutes stair climber",
+                            "10 minutes rowing machine",
+                            "10 minutes cycling",
+                            "10 minutes elliptical",
+                            "5 minutes cool-down"
+                        ]
+                    }
+                ]
+            }
+        };
+
+        function showPlanDetails(planId) {
+            const plan = workoutPlans[planId];
+            document.getElementById('modalTitle').textContent = plan.title;
+            
+            let content = `
+                <p class="text-gray-600 mb-6">${plan.description}</p>
+                <div class="space-y-6">
+            `;
+            
+            plan.schedule.forEach(day => {
+                content += `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-3">${day.day}</h3>
+                        <ul class="space-y-2">
+                            ${day.exercises.map(exercise => `
+                                <li class="text-gray-600">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    ${exercise}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            content += '</div>';
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('planModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('planModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('planModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Check login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
